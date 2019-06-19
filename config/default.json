@@ -1,0 +1,4 @@
+{
+    "mongoDbURI" : "mongodb+srv://obaju:obaju123@devconnector-4zdoy.mongodb.net/obaju?retryWrites=true&w=majority",
+    "jwtSecret" : "jwtobajusecret"
+}
