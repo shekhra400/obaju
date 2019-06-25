@@ -2,11 +2,11 @@ import axios from "axios";
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { updateToken } from './actions';
 
-export function* testSaga(){
-    yield takeLatest('testAction', testSagaWatcher);
+export function* loginSaga(){
+    yield takeLatest('loginAction', loginSagaWatcher);
 }
 
-function* testSagaWatcher(action){
+function* loginSagaWatcher(action){
     try {
         //call - call(fn, ...args)
     const { data } = yield call(axios.post,'api/auth/login', action.payload);
