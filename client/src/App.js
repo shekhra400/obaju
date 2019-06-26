@@ -5,6 +5,7 @@ import LoginComponent from './components/loginComponent';
 import RegisterComponent from './components/registerComponent';
 import Header from './components/headerComponent';
 import Footer from './components/footerComponent';
+import DasbboardComponent from './components/dasbboard/account';
 // import logo from './logo.svg';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.min.css';
@@ -19,6 +20,7 @@ const App = () =>
         <Switch>
           <Route exact path="/login" component={LoginComponent} />
           <Route exact path="/register" component={RegisterComponent} />
+          <Route exact path="/dashboard" component={DasbboardComponent} />
         </Switch>
       </Router>
       <Footer />

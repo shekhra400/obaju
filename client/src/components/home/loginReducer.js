@@ -10,7 +10,8 @@ import {
 
 const initialState = fromJS({
       token:localStorage.getItem('token'),
-      isAutherticated: false,
+      // token:null,
+      isAuthenticated: false,
       isFetching:false,
       error: null,
  });
@@ -19,18 +20,20 @@ const initialState = fromJS({
    let updatedState;
    switch (type) {
      case USER_ACTION_LOGIN_REQUEST:
-         updatedState = state.set('isFetching', true).set('error', null);
+         updatedState = state.set('error', null).set('isFetching', true);
+         break;
       case USER_ACTION_LOGIN_SUCCESS:
+      console.log(data);
          if(data){
             localStorage.setItem('token', data.token);
-            updatedState = state.set('token', data.token).set('isFetching', false);
+            updatedState = state.set('token', data.token).set('isFetching', false).set('isAuthenticated',true);
          }else{
             updatedState = state.set('isFetching',false);
          }
         break;
       case USER_ACTION_LOGIN_ERROR:
          localStorage.removeItem('token');
-         updatedState = state.set('error',error)
+         updatedState = state.set('error',error).set('token',null).set('isFetching', false).set('isAuthenticated',false);
          break;
      default:
          updatedState = state;

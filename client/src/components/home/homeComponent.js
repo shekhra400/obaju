@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { loginAction } from './actions';
 import { toJS } from '../../hoc/toJS';
 import { createSelector, createStructuredSelector } from 'reselect';
-import { selectLoginToken } from './loginSelector';
+import { selectLoginToken, selectisAuthenticated } from './loginSelector';
 // import propTypes from 'prop-types';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 export class HomeComponent extends React.Component {
@@ -16,11 +17,11 @@ export class HomeComponent extends React.Component {
             password:''
         }
     }
-    onInputChange = (e) => {
+    onInputChange = e => {
         this.setState({[e.target.name]:e.target.value});
     }
 
-    onLoginSubmit = (e)=> {
+    onLoginSubmit = e => {
         console.log('onsubmit')
         e.preventDefault();
         const { email, password } = this.state;
@@ -29,13 +30,16 @@ export class HomeComponent extends React.Component {
 
     render(){
         // console.log('this.props',this.props);
-        const { token } = this.props;
+        const { isAutherticated } = this.props;
+        if(isAutherticated){
+            return <Redirect to='/dashboard'/>
+        }
         return (<React.Fragment>
-            {/* <h1>Home Component</h1> */}
+            {/* <h1>Home Component</h1>
              {!token? 
             <button onClick={this.props.loginSubmit}>login</button>:
             'login success'
-            } 
+            }  */}
 
             <div id="all">
                 <div id="content">
@@ -82,7 +86,7 @@ export class HomeComponent extends React.Component {
                                 <p class="lead">Already our customer?</p>
                                 <p class="text-muted">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
                                 {/* <hr> */}
-                                <form>
+                                <form onSubmit={this.onLoginSubmit}>
                                     <div class="form-group">
                                         <label for="email">Email</label>
                                         <input name="email" value={this.state.email} onChange={this.onInputChange} id="email" type="text" class="form-control" />
@@ -92,7 +96,7 @@ export class HomeComponent extends React.Component {
                                         <input name="password" value={this.state.password} onChange={this.onInputChange} id="password" type="password" class="form-control" />
                                     </div>
                                     <div class="text-center">
-                                        <button onSubmit={this.onLoginSubmit} type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
+                                        <button  type="submit" class="btn btn-primary"><i class="fa fa-sign-in"></i> Log in</button>
                                     </div>
                                 </form>
                             </div>
@@ -108,7 +112,7 @@ export class HomeComponent extends React.Component {
 HomeComponent.propTypes = {
     loginSubmit: PropTypes.func,
     isFetching: PropTypes.bool,
-    token:PropTypes.string,
+    isAutherticated:PropTypes.bool,
   };
   
   HomeComponent.defaultProps = {
@@ -116,7 +120,8 @@ HomeComponent.propTypes = {
   };
 
 const mapStateToProps = createStructuredSelector({
-        token: selectLoginToken()
+        token: selectLoginToken(),
+        isAutherticated: selectisAuthenticated()
     });
 
 

@@ -5,7 +5,13 @@ export const selectLoginDetails = state => {
 } 
 
 export const selectLoginToken = () => {
-  return createSelector(selectLoginDetails, labelsState =>
-    labelsState.getIn(['token'])
+  return createSelector(selectLoginDetails, loginState =>
+    loginState.getIn(['token'])
   );
 };
+
+export const selectisAuthenticated = () => {
+   return createSelector(selectLoginDetails, loginState =>
+      loginState.get('isAuthenticated')
+   );
+ };
