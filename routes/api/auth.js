@@ -28,14 +28,13 @@ router.post('/login', async (req,res) => {
     const { email, password } = req.body;
     try{
         const user = await User.findOne({ email });
-
         if(!user){
             res.status(400).json({error:[{ msg: "Invalid Credentials" }]});
         }
 
         const isMatch = await bcrypt.compare(password, user.password);
         if(!isMatch){
-            res.status(400).json({error:[{ msg: "Invalid password" }]});
+            res.status(400).json({error:["Invalid password"]});
         }
         //send Jsonwebtoken
         const payload = {
@@ -54,7 +53,7 @@ router.post('/login', async (req,res) => {
 
         } catch (error) {
             console.log(error.message);
-            res.status(401).json({msg: "Token invalid"});
+            res.status(401).json({error: ["Token invalid"]});
         }
 
 
