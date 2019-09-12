@@ -14,8 +14,8 @@ app.use(express.json());
 
 //Define routes
 
-app.use('/api/user',require('./routes/api/users'));
-app.use('/api/auth',require('./routes/api/auth'));
+app.use('/api/user',require('./server/routes/api/users'));
+app.use('/api/auth',require('./server/routes/api/auth'));
 
 //Serve static content for production
 
@@ -26,7 +26,7 @@ if(process.env.NODE_ENV === 'production'){
     })
 }
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT,function(){
     console.log(`Server Port started at ${PORT}`);
 });

@@ -1,11 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
 const { check, validationResult } = require('express-validator/check');
 const User = require('../models/users');
 const jwt = require('jsonwebtoken');
 const config = require('config');
+const crypto = require('crypto');
 
+/*
+@route - POST api/user
+@desc - Register User
+*/
 
 router.post('/', [
     check('name', 'Name is required')
@@ -34,13 +38,11 @@ router.post('/', [
             password
         });
 
-        //Encrypt passward
-        const salt = await bcrypt.genSalt(10);
-        user.password = await bcrypt.hash(password, salt);
+        //Encrypt password
+        user.password = hashPassword(password);
         await user.save();
 
-
-        //send Jsonwebtoken
+        //send Jsonwebtoken to the user as success response
         const payload = {
             user: {
                 id: user.id
@@ -54,10 +56,17 @@ router.post('/', [
                 if(err)throw err;
                     res.json({token})
                 });
+                
     } catch (error) {
         console.error(error.message);
         res.status(500).send('server error');
     }
 });
+
+function hashPassword(password) {
+    const salt = crypto.randomBytes(16).toString('hex');
+    const hash = crypto.pbkdf2Sync(password, salt, 2048, 32, 'sha512').toString('hex');
+    return [salt, hash].join('$');
+    }
 
 module.exports = router;

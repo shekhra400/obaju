@@ -4,13 +4,14 @@ const router = express.Router();
 const User = require('../models/users');
 const config = require('config');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 /*
-@route - POST api/user
-@desc - Register User
+@route - GET api/user
+@desc - Get User Details
 */
 router.get('/', auth, async (req,res) => {
+    console.log('1');
     try {
         const user = await User.findById(res.user.id).select('-password');
         res.json(user);
@@ -32,7 +33,8 @@ router.post('/login', async (req,res) => {
             res.status(400).json({error:["Invalid Credentials"]});
         }
 
-        const isMatch = await bcrypt.compare(password, user.password);
+        const isMatch = verifyHash(password, user.password);
+        console.log('passssss',isMatch)
         if(!isMatch){
             res.status(400).json({error:["Invalid password"]});
         }
@@ -57,5 +59,14 @@ router.post('/login', async (req,res) => {
         }
 
 
-})
+});
 module.exports = router;
+
+function verifyHash(password, original) {
+    const originalHash = original.split('$')[1];
+    const salt = original.split('$')[0];
+    const hash = crypto.pbkdf2Sync(password, salt, 2048, 32, 'sha512').toString('hex');
+    
+    return hash === originalHash
+    
+    }

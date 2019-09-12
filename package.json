@@ -15,8 +15,8 @@
   "author": "shekhar shukla",
   "license": "ISC",
   "dependencies": {
-    "bcrypt": "^3.0.6",
     "config": "^3.1.0",
+    "crypto": "^1.0.1",
     "express": "^4.17.1",
     "express-validator": "^5.3.1",
     "gravatar": "^1.8.0",
