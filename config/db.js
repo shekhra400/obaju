@@ -8,7 +8,7 @@ const connectDB = async () => {
             useNewUrlParser: true,
             useCreateIndex: true
         });
-        console.log('dbconnected');
+        console.log('DB Connected !!!!');
     } catch (error) {
         console.error(error);
         process.exit(1);

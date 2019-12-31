@@ -1,0 +1,28 @@
+version: "2"
+services:
+    client:
+        image: mhart/alpine-node:6.8.0
+        restart: always
+        ports:
+            - "3000:3000"
+        working_dir: /client/src
+        volumes:
+            - ./client:/client/src
+        entrypoint: ["npm", "start"]
+        links:
+            - api
+        networks:
+            - webappnetwork
+    api:
+        image: webapp-api
+        restart: always
+        ports:
+            - "9000:9000"
+        volumes:
+            - ./client:/client
+            - /client/node_modules
+        networks:
+            - webappnetwork
+networks:
+    webappnetwork:
+        driver: bridge
